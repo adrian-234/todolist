@@ -14,11 +14,6 @@ function loadItems() {
     wrapper.innerHTML = "";
     for (let i = 0; i < items.length; i++) {
         items[i] = items[i].split("$");
-        //ezt lehet illene áttteni a mentéshez?
-        /*
-        items[i][0] = items[i][0].replace(/-/g,".");
-        items[i][0] = items[i][0].replace("T"," ");
-*/
         let listItem = document.createElement("div");
         listItem.setAttribute("class", "list_items");
         for (let x = 0; x < items[i].length; x++) {
@@ -28,12 +23,14 @@ function loadItems() {
             listItem.appendChild(div);
         }
         listItem.childNodes[0].setAttribute("type", "datetime-local");
+
         //törlés gomb
         let div = document.createElement("div");
         let ie = document.createElement("i");
         ie.setAttribute("class", "fa-solid fa-xmark");
-        ie.setAttribute("onclick", "deleteItem(" + i + ")");
+        ie.setAttribute("onclick", "deleteItem(" + i + ", this)");
         div.appendChild(ie);
+
         //edit gomb
         ie = document.createElement("i");
         ie.setAttribute("class", "fa-solid fa-pencil");
@@ -58,10 +55,10 @@ function changeMenu() {
         let job = document.getElementById("job").value;
         if (time == ""|| job == "") {
             if (time == "") {
-                document.getElementById("time").style.boxShadow = "0px 0px 4px var(--warning)";
+                document.getElementById("time").style.boxShadow = "0px 0px 4px 2px var(--warning)";
             } 
             if (job == "") {
-                document.getElementById("job").style.boxShadow = "0px 0px 4px var(--warning)";
+                document.getElementById("job").style.boxShadow = "0px 0px 4px 2px var(--warning)";
             }
             alert("Nincs minden adat megadva!");
         } else {
@@ -94,17 +91,28 @@ function closeMenu() {
     inputfield = "hidden";
 }
 
-function deleteItem(id) {
-    items.splice(id, 1);
-    items = items.join("|");
-    items = items.replace(/,/g, "$");
-    console.log({items});
-    if (items == '') {
-        localS.removeItem("todoList");
-    } else {
-        localS.setItem("todoList", items);
+function deleteItem(id, obj) {
+    let item = document.getElementById("list_items_wrapper").childNodes[id];
+    let childs = item.childNodes;
+    if (childs[0].getAttribute("readonly") != null) {     //kitörli  a local storageból a megadott bejegyzést
+        items.splice(id, 1);
+        items = items.join("|");
+        items = items.replace(/,/g, "$");
+        if (items == '') {
+            localS.removeItem("todoList");
+        } else {
+            localS.setItem("todoList", items);
+        }
+        loadItems();
+    } else {    //canceleli a felülírást
+        for (let i = 0; i < 3; i++) {
+            childs[i].setAttribute("readonly", true);
+            childs[i].value = items[id][i];
+        }
+        childs[0].style.boxShadow = "none";
+        childs[2].style.boxShadow = "none";
+        item.lastChild.lastChild.setAttribute("class", "fa-solid fa-pencil");
     }
-    loadItems();
 }
 
 function editItem(id, obj) {
@@ -141,9 +149,4 @@ function editItem(id, obj) {
         localS.setItem("todoList", items);
         loadItems();
     }
-
-    
-}
-
-function test() {
 }

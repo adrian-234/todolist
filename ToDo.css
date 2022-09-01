@@ -13,9 +13,17 @@ body {
     --backgroundcolor_second: #7c7171;
     --backgroundcolor_third: #695e5e;
     --highlight: #75dddd;
-    --warning: #c20114;
-    --font_color2: #5900ff;
-    --font_color: #a5a5a5;
+    --warning: #d72638;
+    --font_color: #000000;
+}
+
+.light {
+    --backgroundcolor: #dadadd;
+    --backgroundcolor_second: #9999a1;
+    --backgroundcolor_third: #66666e;
+    --highlight: #75dddd;
+    --warning: #d72638;
+    --font_color: #252422;
 }
 
 h1 {
@@ -34,6 +42,7 @@ h1 {
     background-color: var(--backgroundcolor_second);
     border-radius: 6px;
     padding: 2px;
+    box-shadow: black 2px 2px 6px 2px;
 }
 
 .list_items {
@@ -61,11 +70,9 @@ h1 {
     display: inline-flex;
     align-items: center;
     height: 1em;
-
 }
 
 #list_items_wrapper  > div:hover, #inputfield:hover {
-    transition: .15s;
     font-size: 23.5px;
 }
 
@@ -81,7 +88,6 @@ h1 {
     height: 1rem;
     border-radius: 50%;
     border: 1px solid black;
-    transition: .175s ease-in;
 }
 .list_items div:last-child > i:hover {
     color: var(--highlight);
@@ -112,10 +118,15 @@ input {
     height: 22px;
     background-color: var(--backgroundcolor_third);
     border-radius: 6px;
-    border: 1px solid black;
+    border: 1px solid var(--font_color);
 }
 input::placeholder {
-    color: black;
+    color: var(--font_color);
+}
+input:read-only {
+    border: none;
+    outline: none;
+    background-color: var(--backgroundcolor_second);
 }
 
 #btn_container {
@@ -124,7 +135,7 @@ input::placeholder {
 }
 
 #btn_container > div{
-    border: 1px solid black;
+    border: 1px solid var(--font_color);
     border-radius: 50%;
     width: 29px;
     height: 29px;
@@ -154,24 +165,3 @@ input::placeholder {
 cursor: pointer;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-input:read-only {
-    background-color: var(--backgroundcolor_second);
-    border: none;
-    outline: none;
-    font-size: 22px;
-    
-}
